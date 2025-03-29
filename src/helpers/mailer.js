@@ -2,9 +2,15 @@ import nodemailer from 'nodemailer';
 import bcrypt from 'bcryptjs';
 import User from '@/models/userModel';
 
-const sendEmail = async ({ email, emailType, userId }) => {
+const sendEmail = async ( email, emailType, userId ) => {
   try {
     // Create a transporter
+    console.log('Creating transporter...');
+    console.log('Email:', email);
+    console.log('Email Type:', emailType);
+    console.log('User ID:', userId);
+    console.log("emailuser", process.env.EMAIL_USER);
+    console.log("emailpass", process.env.EMAIL_PASS);
     const transporter = nodemailer.createTransport({
       host: "sandbox.smtp.mailtrap.io",
       port: 2525,
