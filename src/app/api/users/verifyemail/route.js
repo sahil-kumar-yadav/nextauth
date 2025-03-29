@@ -9,6 +9,8 @@ export async function POST(req) {
 
     // Parse the request body to get the token
     const { token } = await req.json();
+    
+    // console.log('Token received:', token);
 
     if (!token) {
       return NextResponse.json(
@@ -16,13 +18,14 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-
+    
     // Find the user with the provided token
     const user = await User.findOne({ verifyToken: token });
+    console.log('User found:', user);
 
     if (!user) {
       return NextResponse.json(
-        { error: 'Invalid or expired verification token.' },
+        { error: 'User not found Invalid or expired verification token.' },
         { status: 400 }
       );
     }
@@ -49,7 +52,7 @@ export async function POST(req) {
   } catch (error) {
     console.error('Error in verifyemail route:', error.message);
     return NextResponse.json(
-      { error: 'Something went wrong. Please try again later.' },
+      { error: 'Something went wrong in token route. Please try again later.' },
       { status: 500 }
     );
   }

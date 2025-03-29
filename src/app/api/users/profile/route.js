@@ -23,7 +23,7 @@ export async function GET(req) {
 
     // Fetch the user from the database
     const user = await User.findById(decodedData.userId).select('-password'); // Exclude the password field
-
+    // console.log('User found:', user);
     if (!user) {
       return NextResponse.json(
         { error: 'User not found.' },

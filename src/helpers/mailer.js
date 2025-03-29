@@ -29,7 +29,7 @@ const sendEmail = async ( email, emailType, userId ) => {
       const verifyTokenExpiry = Date.now() + 3600000; // Token valid for 1 hour
 
       // Update the user in the database with the verification token and expiry
-      await User.findByIdAndUpdate(userId, {
+      await User.findByIdAndUpdate(userId,{
         verifyToken,
         verifyTokenExpiry,
       });
@@ -46,7 +46,7 @@ const sendEmail = async ( email, emailType, userId ) => {
              Verify Email
           </a>
           <p>If the button above does not work, copy and paste the following link into your browser:</p>
-          <p>${process.env.DOMAIN}/verifyemail?token=${encodeURIComponent(verifyToken)}</p>
+          <p>${process.env.DOMAIN}/verifyemail?token=${verifyToken}</p>
           <p>If you did not request this, please ignore this email.</p>
           <p>Thank you,<br>The Team</p>
         </div>
@@ -57,7 +57,7 @@ const sendEmail = async ( email, emailType, userId ) => {
       const forgotPasswordExpiry = Date.now() + 3600000; // Token valid for 1 hour
 
       // Update the user in the database with the forgot password token and expiry
-      await User.findByIdAndUpdate(userId, {
+      await User.findByIdAndUpdate(userId,{
         forgotPasswordToken,
         forgotPasswordExpiry,
       });
