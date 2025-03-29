@@ -24,7 +24,7 @@ export async function POST(req) {
     const user = await User.findOne({ email });
     if (!user) {
       return NextResponse.json(
-        { error: 'Invalid email or password. or user does not exist' },
+        { error: 'Invalid email or password.' },
         { status: 401 }
       );
     }
@@ -51,13 +51,23 @@ export async function POST(req) {
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' } // Token expires in 1 hour
+      { expiresIn: '5h' } // Token expires in 5 hours
     );
 
-    return NextResponse.json(
-      { message: 'Login successful.', token },
+    // Set the token as an HTTP-only cookie
+    const response = NextResponse.json(
+      { message: 'Login successful.' },
       { status: 200 }
     );
+    response.cookies.set('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+      sameSite: 'strict', // Prevent CSRF attacks
+      maxAge: 5 * 60 * 60, // 5 hours in seconds
+      path: '/', // Cookie available across the entire site
+    });
+
+    return response;
   } catch (error) {
     console.error('Error in login route:', error.message);
     return NextResponse.json(
